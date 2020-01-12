@@ -1,0 +1,188 @@
+<div class="modal" ng-controller="KisBpmFieldsPopupCtrl">
+  <div class="modal-dialog modal-wide">
+    <div class="modal-content">
+      <!--<div class="modal-header">-->
+      <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>-->
+      <!--&lt;!&ndash; <h3>{{'PROPERTY.PROPERTY.EDIT.TITLE' | translate:property}}</h3> &ndash;&gt;-->
+      <!--<h3>服务属性</h3>-->
+      <!--</div>-->
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>
+        <h2 class="page-header">
+          <i class="fa fa-globe"></i> Service Attributes
+        </h2>
+        <div class="row row-no-gutter">
+          <div class="col-xs-6">
+            <div ng-if="translationsRetrieved" class="kis-listener-grid" ng-grid="gridOptions"></div>
+            <div ng-if="selectServiceType=='custom'" class="pull-right">
+              <!--<div class="btn-group">-->
+              <!--<a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.MOVE.UP' | translate}}"-->
+              <!--data-placement="bottom" data-original-title="" title="" ng-click="moveFieldUp()"><i-->
+              <!--class="glyphicon glyphicon-arrow-up"></i></a>-->
+              <!--<a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.MOVE.DOWN' | translate}}"-->
+              <!--data-placement="bottom" data-original-title="" title="" ng-click="moveFieldDown()"><i-->
+              <!--class="glyphicon glyphicon-arrow-down"></i></a>-->
+              <!--</div>-->
+              <div class="btn-group">
+                <a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.ADD' | translate}}"
+                   data-placement="bottom" data-original-title="" title="" ng-click="addNewField()"><i
+                  class="glyphicon glyphicon-plus"></i></a>
+                <a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.REMOVE' | translate}}"
+                   data-placement="bottom" data-original-title="" title="" ng-click="removeField()"><i
+                  class="glyphicon glyphicon-minus"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6">
+            <div ng-if="selectShapeName == 'LoadData' && selectedFields.length > 0 && selectedFields[0].name=='url' ">
+              <div ng-show="dataSetType=='CrowdData'" class="kis-listener-grid" ng-grid="dataBase"></div>
+              <div ng-show="dataSetType=='AnswerData'" class="kis-listener-grid" ng-grid="answerDataBase"></div>
+            </div>
+            <div ng-show="selectShapeName == 'LoadData' && selectedFields.length > 0 && selectedFields[0].name=='dataSetType' ">
+              <div class="form-group">
+                <label for="typeField">{{'PROPERTY.FORMPROPERTIES.TYPE' | translate}}</label>
+                <select id="typeField" class="form-control"  ng-model="dataSetType"  >
+                  <option value="CrowdData">CrowdData</option>
+                  <option value="AnswerData">AnswerData</option>
+                </select>
+              </div>
+            </div>
+            <div ng-if="selectShapeName != 'LoadData'&& selectedFields.length > 0 && selectServiceType=='custom'">
+
+
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <h5 class="page-header">
+                  <i class="fa fa-globe"></i> Setting
+                  <!--<small class="pull-right">Date: 2/10/2014</small>-->
+                </h5>
+              </div>
+
+
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <label for="fieldName">Input Name</label>
+                <input type="text" id="fieldName" class="form-control" ng-model="selectedFields[0].name"
+                       placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>
+              </div>
+              <!-- <div class="form-group">
+                        <label for="fieldName">{{'PROPERTY.FIELDS.NAME' | translate}}</label>
+                        <input type="text" id="fieldName"  class="form-control" ng-model="selectedFields[0].name" placeholder="{{'PROPERTY.FIELDS.NAME.PLACEHOLDER' | translate}}" />
+                    </div> -->
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <label for="fieldExpression">Input Expression</label>
+                <input type="text" id="fieldExpression" class="form-control" ng-model="selectedFields[0].expression"
+                       ng-change="fieldDetailsChanged()"
+                       placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>
+              </div>
+            </div>
+
+            <div ng-if="selectShapeName != 'LoadData'&& selectedFields.length > 0 && selectServiceType=='fixed'">
+              <div class="form-group" ng-if="selectedFields[0].type=='string'">
+                <label for="fieldString">Input String Value</label>
+                <input type="text" id="fieldString" class="form-control" ng-model="selectedFields[0].stringValue"
+                       ng-change="fieldDetailsChanged()"/>
+              </div>
+              <div class="form-group" ng-if="selectedFields[0].type=='text'">
+                <!-- <label for="fieldString">{{'PROPERTY.FIELDS.STRING' | translate}}</label> -->
+                <label for="fieldText">Input Text</label>
+                <textarea rows="25" type="text" id="fieldText" class="form-control"
+                          ng-model="selectedFields[0].string" ng-change="fieldDetailsChanged()"></textarea>
+              </div>
+
+              <div class="form-group" ng-if="selectedFields[0].type=='long'">
+                <!-- <label for="fieldString">{{'PROPERTY.FIELDS.STRING' | translate}}</label> -->
+                <label for="fieldNumber">Input Number</label>
+                <input type="text" id="fieldNumber" class="form-control" ng-model="selectedFields[0].stringValue"
+                       ng-change="fieldDetailsChanged()"
+                />
+              </div>
+            </div>
+            <!-- <div class="form-group" ng-if="selectedFields[0].type!='Text'">
+            <label for="fieldExpression">{{'PROPERTY.FIELDS.EXPRESSION' | translate}}</label>
+                <input type="text" id="fieldExpression"  class="form-control" ng-model="selectedFields[0].expression" ng-change="fieldDetailsChanged()" placeholder="{{'PROPERTY.FIELDS.EXPRESSION.PLACEHOLDER' | translate}}" />
+            </div> -->
+
+            <!--<div class="form-group" ng-if="selectedFields[0].type=='Text'">-->
+            <!--&lt;!&ndash; <label for="fieldString">{{'PROPERTY.FIELDS.STRING' | translate}}</label> &ndash;&gt;-->
+            <!--<label for="fieldString">Input String Value</label>-->
+            <!--<textarea rows="20" type="text" id="fieldString" class="form-control"-->
+            <!--ng-model="selectedFields[0].string" ng-change="fieldDetailsChanged()"-->
+            <!--placeholder="{{'PROPERTY.FIELDS.STRING.PLACEHOLDER' | translate}}"></textarea>-->
+            <!--</div>-->
+
+
+            <!--<div ng-if="selectedFields[0].type == 'File'" class="form-group">-->
+            <!--<label for="fileUpload">FilePath</label>-->
+            <!--<input id="fileUpload" type="file" onchange='angular.element(this).scope().fileChanged(this)'/>-->
+            <!--&lt;!&ndash; <div class="btn-group">-->
+            <!--<button ng-click="fileUpload()" class="btn btn-primary" translate>Upload</button>-->
+            <!--</div> &ndash;&gt;-->
+            <!--</div>-->
+
+            <!--<div ng-if="selectedFields[0].name == 'variable_judgments_mode'">-->
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+            <!--<label for="fieldStringValue">{{child11[0].name}}</label>-->
+            <!--<input type="text" id="fieldStringValue" class="form-control" ng-model="child11[0].stringValue"-->
+            <!--ng-change="fieldDetailsChanged()"-->
+            <!--placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+            <!--<label for="fieldStringValue">{{child11[1].name}}</label>-->
+            <!--<input type="text" id="fieldStringValue" class="form-control" ng-model="child11[1].stringValue"-->
+            <!--ng-change="fieldDetailsChanged()"-->
+            <!--placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+            <!--<label for="fieldStringValue">{{child11[2].name}}</label>-->
+            <!--<input type="text" id="fieldStringValue" class="form-control" ng-model="child11[2].stringValue"-->
+            <!--ng-change="fieldDetailsChanged()"-->
+            <!--placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+            <!--<label for="fieldStringValue">{{child11[3].name}}</label>-->
+            <!--<input type="text" id="fieldStringValue" class="form-control" ng-model="child11[3].stringValue"-->
+            <!--ng-change="fieldDetailsChanged()"-->
+            <!--placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>-->
+            <!--</div>-->
+            <!--</div>-->
+
+
+            <!--<div ng-if="selectedFields[0].name == 'auto_order'">-->
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+            <!--<label for="fieldStringValue">{{child22[0].name}}</label>-->
+            <!--<input type="text" id="fieldStringValue" class="form-control" ng-model="child22[0].stringValue"-->
+            <!--ng-change="fieldDetailsChanged()"-->
+            <!--placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+            <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+            <!--<label for="fieldStringValue">{{child22[1].name}}</label>-->
+            <!--<input type="text" id="fieldStringValue" class="form-control" ng-model="child22[1].stringValue"-->
+            <!--ng-change="fieldDetailsChanged()"-->
+            <!--placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>-->
+            <!--</div>-->
+            <!--</div>-->
+
+
+            <div ng-show="selectedFields.length == 0" class="muted no-property-selected" translate>
+              PROPERTY.FIELDS.EMPTY
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button ng-click="cancel()" class="btn btn-primary" translate>ACTION.CANCEL</button>
+        <button ng-click="save()" class="btn btn-primary" translate>ACTION.SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>

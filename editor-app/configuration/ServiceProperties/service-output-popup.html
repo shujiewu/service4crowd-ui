@@ -1,0 +1,257 @@
+<div class="modal" ng-controller="ServiceOutputPopupCtrl">
+  <div class="modal-dialog modal-wide">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>
+        <h3>Service Setting</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row row-no-gutter">
+          <div class="col-xs-7">
+            <div class="form-group">
+              <h6 class="page-header">
+                <i class="fa fa-globe"></i>Service Response
+              </h6>
+              <div class="form-group">
+                <label for="typeField">Status</label>
+                <select id="typeField" class="form-control" ng-model="selectedSyncStatus" style="width: 50%"
+                        ng-change="syncResponseChange()">
+                  <option ng-repeat="status in syncStatus">{{status}}</option>
+                </select>
+              </div>
+              <div ng-if="translationsRetrieved" class="default-grid" ng-grid="syncResponse"></div>
+            </div>
+          </div>
+          <div class="col-xs-5">
+            <div ng-show="selectedSyncBody.length > 0">
+              <div class="form-group">
+                <h5 class="page-header"><i class="fa fa-globe"></i> Description</h5>
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 5px;">
+                  {{selectedSyncBody[0].description}}
+                </p>
+              </div>
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <h5 class="page-header" style="margin-top: 20px">
+                  <i class="fa fa-globe"></i> Setting
+                  <!--<small class="pull-right">Date: 2/10/2014</small>-->
+                </h5>
+              </div>
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <label>rename</label>
+                <input type="text" class="form-control" ng-model="selectedSyncBody[0].rename"
+                       placeholder="{{'PROPERTY.FIELDS.STRING.PLACEHOLDER' | translate}}"/>
+              </div>
+
+              <div class="form-group">
+                <label for="scopeField">scope</label>
+                <select id="scopeField" class="form-control" ng-model="selectedSyncBody[0].scope">
+                  <option>local</option>
+                  <option>execution</option>
+                  <option>process</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="hasAsync" class="row row-no-gutter">
+          <div class="col-xs-7">
+            <div class="form-group">
+              <h6 class="page-header">
+                <i class="fa fa-globe"></i>Asynchronous Response
+              </h6>
+              <div class="form-group">
+                <label for="typeField2">Status</label>
+                <select id="typeField2" class="form-control" ng-model="selectedAsyncStatus" style="width: 50%">
+                  <option ng-repeat="status in asyncStatus">{{status}}</option>
+                </select>
+              </div>
+              <div class="default-grid" ng-grid="asyncResponse"></div>
+            </div>
+          </div>
+          <div class="col-xs-5">
+            <div ng-show="selectedAsyncBody.length > 0">
+              <div class="form-group">
+                <h5 class="page-header"><i class="fa fa-globe"></i> Description</h5>
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 5px;">
+                  {{selectedAsyncBody[0].description}}
+                </p>
+              </div>
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <h5 class="page-header" style="margin-top: 20px">
+                  <i class="fa fa-globe"></i> Setting
+                  <!--<small class="pull-right">Date: 2/10/2014</small>-->
+                </h5>
+              </div>
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <label>rename</label>
+                <input type="text" class="form-control" ng-model="selectedAsyncBody[0].rename"
+                       placeholder="{{'PROPERTY.FIELDS.STRING.PLACEHOLDER' | translate}}"/>
+              </div>
+
+              <div class="form-group">
+                <label for="scopeField2">scope</label>
+                <select id="scopeField2" class="form-control" ng-model="selectedAsyncBody[0].scope">
+                  <option>local</option>
+                  <option>execution</option>
+                  <option>process</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!--<div class="col-xs-7">-->
+            <!--<div class="form-group">-->
+              <!--<h6 class="page-header">-->
+                <!--<i class="fa fa-globe"></i>Asynchronous Response-->
+              <!--</h6>-->
+              <!--<div ng-if="translationsRetrieved" class="default-grid" style="height: 300px"-->
+                   <!--ng-grid="inPutOptions"></div>-->
+            <!--</div>-->
+            <!--<div class="form-group" style="margin-top: 40px">-->
+              <!--<h6 class="page-header">-->
+                <!--<i class="fa fa-globe"></i> Output Property-->
+                <!--&lt;!&ndash;<small class="pull-right">Date: 2/10/2014</small>&ndash;&gt;-->
+              <!--</h6>-->
+              <!--<div ng-if="translationsRetrieved" class="default-grid" ng-grid="outPutOptions"></div>-->
+              <!--<div class="btn-group pull-right">-->
+                <!--<a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.ADD' | translate}}"-->
+                   <!--data-placement="bottom" data-original-title="" title="" ng-click="addOutputProperty()">-->
+                  <!--<i class="glyphicon glyphicon-plus"></i></a>-->
+                <!--<a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.REMOVE' | translate}}"-->
+                   <!--data-placement="bottom" data-original-title="" title="" ng-click="removeOutputProperty()">-->
+                  <!--<i class="glyphicon glyphicon-minus"></i></a>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="col-xs-5">-->
+            <!--<div ng-show="selectedProperties.length > 0">-->
+
+              <!--<div class="form-group">-->
+                <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+                <!--<h5 class="page-header">-->
+                  <!--<i class="fa fa-globe"></i> Description-->
+                  <!--&lt;!&ndash;<small class="pull-right">Date: 2/10/2014</small>&ndash;&gt;-->
+                <!--</h5>-->
+                <!--<p class="text-muted well well-sm no-shadow" style="margin-top: 5px;">-->
+                  <!--{{selectedProperties[0].description}}-->
+                <!--</p>-->
+              <!--</div>-->
+              <!--<div class="form-group">-->
+                <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+                <!--<h5 class="page-header" style="margin-top: 20px">-->
+                  <!--<i class="fa fa-globe"></i> Setting-->
+                  <!--&lt;!&ndash;<small class="pull-right">Date: 2/10/2014</small>&ndash;&gt;-->
+                <!--</h5>-->
+              <!--</div>-->
+
+              <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+              <!--&lt;!&ndash;<label for="fieldName">Name</label>&ndash;&gt;-->
+              <!--&lt;!&ndash;<input id="fieldName" class="form-control" ng-model="selectedProperties[0].name"&ndash;&gt;-->
+              <!--&lt;!&ndash;ng-change="fieldDetailsChanged()"&ndash;&gt;-->
+              <!--&lt;!&ndash;placeholder="{{'PROPERTY.FIELDS.NAME.PLACEHOLDER' | translate}}"/>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+              <!--&lt;!&ndash;<label for="typeField">{{'PROPERTY.FORMPROPERTIES.TYPE' | translate}}</label>&ndash;&gt;-->
+              <!--&lt;!&ndash;<select id="typeField" class="form-control" ng-model="selectedProperties[0].type"&ndash;&gt;-->
+              <!--&lt;!&ndash;ng-change="propertyTypeChanged()">&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>long</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>string</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>text</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>boolean</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>expression</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>object</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>list</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;</select>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+              <!--<div class="form-group">-->
+                <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+                <!--<label for="fieldLongValue">Default Value</label>-->
+                <!--<code style="margin-top: 5px;">-->
+                  <!--{{selectedProperties[0].defaultValue}}-->
+                <!--</code>-->
+              <!--</div>-->
+
+              <!--<div class="form-group" ng-if="selectedProperties[0].type=='long'">-->
+                <!--&lt;!&ndash; <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> &ndash;&gt;-->
+                <!--<label for="fieldLongValue">Input Number</label>-->
+                <!--<input type="number" id="fieldLongValue" class="form-control" ng-model="selectedProperties[0].value"-->
+                       <!--ng-change="fieldDetailsChanged()" min="0"-->
+                       <!--placeholder="{{'PROPERTY.FIELDS.LONG.PLACEHOLDER' | translate}}"/>-->
+              <!--</div>-->
+
+              <!--<div class="form-group" ng-if="selectedProperties[0].type=='text'">-->
+                <!--<label for="fieldText">Input Text</label>-->
+                <!--<textarea rows="15" type="text" id="fieldText" class="form-control"-->
+                          <!--ng-model="selectedProperties[0].value"-->
+                          <!--placeholder="{{'PROPERTY.FIELDS.TEXT.PLACEHOLDER' | translate}}"></textarea>-->
+              <!--</div>-->
+
+              <!--<div class="form-group" ng-if="selectedProperties[0].type=='list'">-->
+                <!--<label for="fieldList">Input List</label>-->
+                <!--<textarea rows="15" type="text" id="fieldList" class="form-control"-->
+                          <!--ng-model="selectedProperties[0].value"-->
+                          <!--placeholder="{{'PROPERTY.FIELDS.JSON.PLACEHOLDER' | translate}}"></textarea>-->
+              <!--</div>-->
+
+              <!--<div class="form-group" ng-if="selectedProperties[0].type=='object'">-->
+                <!--<label for="fieldList">Input JsonObject</label>-->
+                <!--<textarea rows="15" type="text" id="fieldob" class="form-control"-->
+                          <!--ng-model="selectedProperties[0].value"-->
+                          <!--placeholder="{{'PROPERTY.FIELDS.JSON.PLACEHOLDER' | translate}}"></textarea>-->
+              <!--</div>-->
+
+              <!--<div class="form-group" ng-if="selectedProperties[0].type=='string'">-->
+                <!--<label for="fieldString">Input String</label>-->
+                <!--<input type="text" id="fieldString" class="form-control"-->
+                       <!--ng-model="selectedProperties[0].value"-->
+                       <!--placeholder="{{'PROPERTY.FIELDS.STRING.PLACEHOLDER' | translate}}"></textarea>-->
+              <!--</div>-->
+
+              <!--<div class="form-group" ng-if="selectedProperties[0].type==='expression'">-->
+                <!--<label for="fieldExpression">{{'PROPERTY.FIELDS.EXPRESSION' | translate}}</label>-->
+                <!--<input type="text" id="fieldExpression" class="form-control" ng-model="selectedProperties[0].value"-->
+                       <!--ng-change="fieldDetailsChanged()"-->
+                       <!--placeholder="{{'PROPERTY.FIELDS.EXPRESSION.PLACEHOLDER' | translate}}"/>-->
+              <!--</div>-->
+
+              <!--<div class="form-group" ng-if="selectedProperties[0].type=='boolean'">-->
+                <!--<label>-->
+                  <!--<input type="radio" name="r1" value="true" class="minimal" ng-model="selectedProperties[0].value">-->
+                  <!--True-->
+                <!--</label>-->
+                <!--<label>-->
+                  <!--<input type="radio" name="r1" value="false" class="minimal" ng-model="selectedProperties[0].value">-->
+                  <!--False-->
+                <!--</label>-->
+              <!--</div>-->
+
+
+              <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+              <!--&lt;!&ndash;<label for="scopeField">scope</label>&ndash;&gt;-->
+              <!--&lt;!&ndash;<select id="scopeField" class="form-control" ng-model="selectedProperties[0].scope"&ndash;&gt;-->
+              <!--&lt;!&ndash;ng-change="propertyTypeChanged()">&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>local</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>execution</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;<option>process</option>&ndash;&gt;-->
+              <!--&lt;!&ndash;</select>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--</div>-->
+            <!--<div ng-show="selectedProperties.length == 0" class="muted no-property-selected" translate>-->
+              <!--PROPERTY.FORMPROPERTIES.EMPTY-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button ng-click="cancel()" class="btn btn-primary" translate>ACTION.CANCEL</button>
+        <button ng-click="save()" class="btn btn-primary" translate>ACTION.SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>

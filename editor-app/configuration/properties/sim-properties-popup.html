@@ -1,0 +1,208 @@
+<div class="modal" ng-controller="KisBpmSimPropertiesPopupCtrl">
+  <div class="modal-dialog modal-wide">
+    <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>
+      <!--<h2>{{'PROPERTY.PROPERTY.EDIT.TITLE' | translate:property}}</h2>-->
+      <h3>JobSetting</h3>
+      </div>
+      <div class="modal-body">
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="close()">&times;</button>-->
+        <!--<h2 class="page-header">-->
+          <!--<i class="fa fa-globe"></i> Simulator Attributes-->
+        <!--</h2>-->
+        <div class="row row-no-gutter">
+          <div class="col-xs-6">
+            <!--<div class="row row-no-gutter">-->
+              <!--<div class="col-xs-12">-->
+                <!--<div ng-if="translationsRetrieved" class="default-grid" ng-grid="gridOptions"></div>-->
+              <!--</div>-->
+            <!--</div>-->
+
+            <div class="form-group">
+              <h6 class="page-header">
+                <i class="fa fa-globe"></i> Input Property
+                <!--<small class="pull-right">Date: 2/10/2014</small>-->
+              </h6>
+              <div ng-if="translationsRetrieved" class="default-grid" ng-grid="gridOptions"></div>
+              <div class="btn-group pull-right">
+                <a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.ADD' | translate}}" data-placement="bottom" data-original-title="" title="" ng-click="addNewField()">
+                  <i class="glyphicon glyphicon-plus"></i></a>
+                <a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.REMOVE' | translate}}" data-placement="bottom" data-original-title="" title="" ng-click="removeField()">
+                  <i class="glyphicon glyphicon-minus"></i></a>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top: 40px">
+              <h6 class="page-header">
+                <i class="fa fa-globe"></i> Output Property
+                <!--<small class="pull-right">Date: 2/10/2014</small>-->
+              </h6>
+              <div ng-if="translationsRetrieved" class="default-grid" ng-grid="gridOptions"></div>
+              <div class="btn-group pull-right">
+                <a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.ADD' | translate}}" data-placement="bottom" data-original-title="" title="" ng-click="addNewField()">
+                  <i class="glyphicon glyphicon-plus"></i></a>
+                <a href="#" class="btn btn-icon btn-primary" rel="tooltip" data-title="{{'ACTION.REMOVE' | translate}}" data-placement="bottom" data-original-title="" title="" ng-click="removeField()">
+                  <i class="glyphicon glyphicon-minus"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div ng-show="selectedProperties.length > 0">
+
+              <!--<div class="form-group">-->
+              <!--<label for="idField">{{'PROPERTY.FORMPROPERTIES.ID' | translate}}</label>-->
+              <!--<input id="idField" class="form-control" type="text" ng-model="selectedProperties[0].name"-->
+              <!--placeholder="{{'PROPERTY.FORMPROPERTIES.ID.PLACEHOLDER' | translate }}"/>-->
+              <!--</div>-->
+              <!--<div class="form-group">-->
+              <!--<label for="nameField">{{'PROPERTY.FORMPROPERTIES.NAME' | translate}}</label>-->
+              <!--<input id="nameField" class="form-control" type="text" ng-model="selectedProperties[0].value"-->
+              <!--placeholder="{{'PROPERTY.FORMPROPERTIES.NAME.PLACEHOLDER' | translate }}"/>-->
+              <!--</div>-->
+
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <h5 class="page-header">
+                  <i class="fa fa-globe"></i> Description
+                  <!--<small class="pull-right">Date: 2/10/2014</small>-->
+                </h5>
+                <p class="text-muted well well-sm no-shadow" style="margin-top: 5px;">
+                  {{selectedProperties[0].description}}
+                </p>
+              </div>
+
+
+              <div class="form-group">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <h5 class="page-header" style="margin-top: 20px">
+                  <i class="fa fa-globe"></i> Value
+                  <!--<small class="pull-right">Date: 2/10/2014</small>-->
+                </h5>
+              </div>
+
+              <div class="form-group" ng-if="selectedProperties[0].name=='cml'">
+                <label for="fieldString">Input Text</label>
+                <textarea rows="15" type="text" id="fieldString" class="form-control"
+                          ng-model="selectedProperties[0].value"
+                          ng-change="fieldDetailsChanged()"
+                          placeholder="{{'PROPERTY.FIELDS.STRING.PLACEHOLDER' | translate}}"></textarea>
+              </div>
+
+              <div class="form-group" ng-if="selectedProperties[0].type=='string' && selectedProperties[0].name!='cml'">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+
+                <div ng-if="selectedProperties[0].name != 'variable_judgments_mode'">
+                  <label for="fieldStringValue">Input String Value</label>
+                  <input type="text" id="fieldStringValue" class="form-control" ng-model="selectedProperties[0].value"
+                         ng-change="fieldDetailsChanged()"
+                         placeholder="{{'PROPERTY.FIELDS.STRINGVALUE.PLACEHOLDER' | translate}}"/>
+                </div>
+
+                <div ng-if="selectedProperties[0].name == 'variable_judgments_mode'">
+
+                  <select id="typeField" class="form-control" ng-model="variable_judgments_mode_type">
+                    <option>none</option>
+                    <option>auto_confidence</option>
+                    <!--<option>external</option>-->
+                  </select>
+
+                  <div ng-if="variable_judgments_mode_type=='auto_confidence'" style="margin-top: 30px">
+                    <h5 class="page-header">
+                      <i class="fa fa-globe"></i> Other Value
+                      <!--<small class="pull-right">Date: 2/10/2014</small>-->
+                    </h5>
+                    <div class="form-group">
+                      <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                      <label for="fieldStringValue2">{{child11[0].name}}</label>
+                      <input type="number" id="fieldStringValue2" class="form-control" ng-model="child11[0].value"
+                             ng-change="fieldDetailsChanged()" min="0"
+                             placeholder="{{'PROPERTY.FIELDS.LONG.PLACEHOLDER' | translate}}"/>
+                    </div>
+                    <div class="form-group">
+                      <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                      <label for="fieldStringValue3">{{child11[1].name}}</label>
+                      <input type="number" id="fieldStringValue3" class="form-control" ng-model="child11[1].value"
+                             ng-change="fieldDetailsChanged()" min="0"
+                             placeholder="{{'PROPERTY.FIELDS.LONG.PLACEHOLDER' | translate}}"/>
+                    </div>
+                    <div class="form-group">
+                      <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                      <label for="fieldStringValue4">{{child11[2].name}}</label>
+                      <input type="number" id="fieldStringValue4" class="form-control" ng-model="child11[2].value"
+                             ng-change="fieldDetailsChanged()" min="0"
+                             placeholder="{{'PROPERTY.FIELDS.LONG.PLACEHOLDER' | translate}}"/>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="form-group" ng-if="selectedProperties[0].type=='long'">
+                <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                <label for="fieldLongValue">Input Number</label>
+                <input type="number" id="fieldLongValue" class="form-control" ng-model="selectedProperties[0].value"
+                       ng-change="fieldDetailsChanged()" min="0"
+                       placeholder="{{'PROPERTY.FIELDS.LONG.PLACEHOLDER' | translate}}"/>
+              </div>
+
+              <!-- <div class="form-group" ng-if="selectedFields[0].type!='Text'">
+              <label for="fieldExpression">{{'PROPERTY.FIELDS.EXPRESSION' | translate}}</label>
+                  <input type="text" id="fieldExpression"  class="form-control" ng-model="selectedFields[0].expression" ng-change="fieldDetailsChanged()" placeholder="{{'PROPERTY.FIELDS.EXPRESSION.PLACEHOLDER' | translate}}" />
+              </div> -->
+
+
+              <div class="form-group" ng-if="selectedProperties[0].type=='boolean'">
+                <div ng-if="selectedProperties[0].name!='auto_order'">
+                  <label>
+                    <input type="radio" name="r1" value="true" class="minimal" ng-model="selectedProperties[0].value">
+                    True
+                  </label>
+                  <label>
+                    <input type="radio" name="r1" value="false" class="minimal" ng-model="selectedProperties[0].value">
+                    False
+                  </label>
+                </div>
+
+                <div ng-if="selectedProperties[0].name=='auto_order'">
+                  <label>
+                    <input type="radio" name="r1" value="true" class="minimal" ng-model="selectedProperties[0].value">
+                    True
+                  </label>
+                  <label>
+                    <input type="radio" name="r2" value="false" class="minimal" ng-model="selectedProperties[0].value">
+                    False
+                  </label>
+                </div>
+                <div ng-if="selectedProperties[0].name=='auto_order' && selectedProperties[0].value=='true'"
+                     style="margin-top: 20px">
+                  <div class="form-group">
+                    <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                    <label for="fieldStringValue6">{{child22[0].name}}</label>
+                    <input type="number" id="fieldStringValue6" class="form-control" ng-model="child22[0].value"
+                           ng-change="fieldDetailsChanged()" min="0"
+                           placeholder="{{'PROPERTY.FIELDS.LONG.PLACEHOLDER' | translate}}"/>
+                  </div>
+                  <div class="form-group">
+                    <!-- <label for="fieldStringValue">{{'PROPERTY.FIELDS.STRINGVALUE' | translate}}</label> -->
+                    <label for="fieldStringValue7">{{child22[1].name}}</label>
+                    <input type="number" id="fieldStringValue7" class="form-control" ng-model="child22[1].value"
+                           ng-change="fieldDetailsChanged()" min="0"
+                           placeholder="{{'PROPERTY.FIELDS.LONG.PLACEHOLDER' | translate}}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ng-show="selectedProperties.length == 0" class="muted no-property-selected" translate>
+              PROPERTY.FORMPROPERTIES.EMPTY
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button ng-click="cancel()" class="btn btn-primary" translate>ACTION.CANCEL</button>
+        <button ng-click="save()" class="btn btn-primary" translate>ACTION.SAVE</button>
+      </div>
+    </div>
+  </div>
+</div>
